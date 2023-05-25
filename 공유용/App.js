@@ -10,9 +10,14 @@ class App extends React.Component {
     };
   }
 
-  onAdd = () => {
+  IncreaseCount = () => {
     this.setState((prevState) => ({
       count: prevState.count + 1,
+    }));
+  };
+  DecreaseCount = () => {
+    this.setState((prevState) => ({
+      count: prevState.count - 1,
     }));
   };
 
@@ -21,7 +26,11 @@ class App extends React.Component {
       <div>
         {/* <PopupArticle /> */}
         {/* {this.state.count} */}
-        <TermProject count={this.state.count} onAdd={this.onAdd} />
+        <TermProject
+          count={this.state.count}
+          IncreaseCount={this.IncreaseCount}
+          DecreaseCount={this.DecreaseCount}
+        />
       </div>
     );
   } //render()

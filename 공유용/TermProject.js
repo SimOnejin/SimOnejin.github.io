@@ -49,7 +49,8 @@ class TermProject extends Component {
     this.checkPosition = this.checkPosition.bind(this);
     window.addEventListener("scroll", this.checkPosition);
 
-    this.handleButtonClick = this.handleButtonClick.bind(this); //버튼 핸들러 바인드
+    this.handleButtonIncrease = this.handleButtonIncrease.bind(this); //버튼 핸들러 바인드
+    this.handleButtonDecrease = this.handleButtonDecrease.bind(this);
   }
   setRef(ref) {
     this.ref = ref;
@@ -84,9 +85,13 @@ class TermProject extends Component {
   //   this.setState({ modalOpen: false });
   // };
 
-  handleButtonClick() {
+  handleButtonIncrease() {
     //부모컴포넌트 숫자추가 함수 호출
-    this.props.onAdd();
+    this.props.IncreaseCount();
+  }
+  handleButtonDecrease() {
+    //부모컴포넌트 숫자감소 함수 호출
+    this.props.DecreaseCount();
   }
 
   render() {
@@ -96,13 +101,13 @@ class TermProject extends Component {
         <div className="flex_container">
           <div className="menu">
             {/* 카트 이미지 클릭시 숫자 증가 // 차후 상품 팝업시 증가로 변경 요망 */}
-            <a id="Empty_cart" onClick={this.handleButtonClick}>
+            <a id="Empty_cart" onClick={this.handleButtonDecrease}>
               <img id="cart" src={Empty_cart}></img>
               {count}
             </a>
 
             <h1>STOPBUGS</h1>
-            <h1>SHOP v7.3</h1>
+            <h1>SHOP v7.4</h1>
             <p>Login Join MyPage</p>
             <h5>NEW</h5>
             <h5>Selected</h5>
@@ -136,7 +141,7 @@ class TermProject extends Component {
                   상의{i + 1}
                   <br />
                   가격:{this.state.price[i]},000₩
-                  <a onClick={this.handleButtonClick}>
+                  <a onClick={this.handleButtonIncrease}>
                     <img id="AddCart" src={Empty_cart}></img>
                   </a>
                 </li>
