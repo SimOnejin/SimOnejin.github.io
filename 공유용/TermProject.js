@@ -136,6 +136,9 @@ class TermProject extends Component {
                   상의{i + 1}
                   <br />
                   가격:{this.state.price[i]},000₩
+                  <a onClick={this.handleButtonClick}>
+                    <img id="AddCart" src={Empty_cart}></img>
+                  </a>
                 </li>
               </article>
             ))}
