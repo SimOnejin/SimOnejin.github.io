@@ -32,6 +32,7 @@ class TermProject extends Component {
     cloth00,
   ];
   price = [34, 135, 64, 9, 47, 83, 23, 68, 80, 21]; //초반 상품 10개 가격 초기화
+  closet = [];
 
   constructor(props) {
     super(props);
@@ -41,6 +42,12 @@ class TermProject extends Component {
       randomNumber: 0, //가격 랜덤숫자 선언
       // modalOpen: false,
       // count: this.props.count,
+      isOpen: false, // 팝업창 열림 여부
+      selectedImage: null, // 선택된 이미지 정보
+      modalOpen: false,
+      closet: [],
+      totalPrice: 0,
+      isVisible: true,
     };
 
     this.ref = React.createRef();
@@ -78,12 +85,24 @@ class TermProject extends Component {
     window.scrollTo({ top: 0, behavior: "smooth" }); // 최상단으로 스크롤 이동
   }
 
-  // openModal = () => {
-  //   this.setState({ modalOpen: true });
-  // };
-  // closeModal = () => {
-  //   this.setState({ modalOpen: false });
-  // };
+  //장바구니 추가하기
+  addCartList = (selectedImage, price) => {
+    const selectedPrice = this.price; // 선택된 이미지의 가격을 가져옴
+    this.setState((prevState) => ({
+      closet: [...prevState.closet, selectedImage],
+      totalPrice: prevState.totalPrice + selectedPrice,
+    }));
+  };
+  openModal = (selectedImage, price) => {
+    this.setState({
+      modalOpen: true,
+      selectedImage,
+      totalPrice: price,
+    });
+  };
+  closeModal = () => {
+    this.setState({ modalOpen: false, selectedImage: null });
+  };
 
   handleButtonIncrease() {
     //부모컴포넌트 숫자추가 함수 호출
@@ -93,6 +112,16 @@ class TermProject extends Component {
     //부모컴포넌트 숫자감소 함수 호출
     this.props.DecreaseCount();
   }
+  MakeEmptyCart() {
+    this.setState({
+      closet: [],
+    });
+  }
+  toggleVisibility() {
+    this.setState((prevState) => ({
+      isVisible: !prevState.isVisible,
+    }));
+  }
 
   render() {
     let { count } = this.props; //부모컴포로부터 값 받기
@@ -100,54 +129,112 @@ class TermProject extends Component {
       <>
         <div className="flex_container">
           <div className="menu">
-            {/* 카트 이미지 클릭시 숫자 증가 // 차후 상품 팝업시 증가로 변경 요망 */}
-            <a id="Empty_cart" onClick={this.handleButtonDecrease}>
+            {/* 카트 이미지 클릭시 숫자 감소 */}
+            <a
+              id="Empty_cart"
+              onClick={() => {
+                // this.handleButtonDecrease();
+                this.toggleVisibility();
+              }}
+            >
               <img id="cart" src={Empty_cart}></img>
               {count}
             </a>
 
             <h1>STOPBUGS</h1>
-            <h1>SHOP v7.4</h1>
-            <p>Login Join MyPage</p>
+            <h1>SHOP v8.11</h1>
+            <span>
+              <a href="Login.jsp">Login</a> Join MyPage
+            </span>
             <h5>NEW</h5>
             <h5>Selected</h5>
             <h5>Men's</h5>
             <h5>Women's</h5>
-            {/* <button onClick={this.openModal}> 모달팝업</button>
+
+            {/* 팝업 부분 */}
             <Modal
               open={this.state.modalOpen}
               close={this.closeModal}
-              title="Create a chat room"
+              title="pop"
             >
-              <main> {this.props.children} </main>에 내용이 입력된다. 리액트
-              클래스형 모달 팝업창입니다. 쉽게 만들 수 있어요. 같이 만들어봐요!
+              <img
+                width="100px"
+                src={this.state.selectedImage}
+                alt="선택된 이미지"
+              />
+              <a
+                onClick={() => {
+                  this.addCartList(this.state.selectedImage, this.price);
+                  this.handleButtonIncrease();
+                }}
+              >
+                <img id="AddCart" src={Empty_cart}></img>
+                {/* {this.state.totalPrice} */}
+              </a>
             </Modal>
-            <a id="Pop" href="#" onClick={this.ViewLayer}>
-              여기를 클릭
-            </a> */}
 
+            {/* 선택한 장바구니 목록 */}
+            <h3>장바구니</h3>
+            {this.state.isVisible ? (
+              <div className="cartItems">
+                <ul className="cartItems2" id="main">
+                  <a
+                    className="trash"
+                    onClick={() => {
+                      this.MakeEmptyCart();
+                      this.handleButtonDecrease();
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-trash3"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                    </svg>
+                  </a>
+                  {this.state.closet.map((closet, i) => (
+                    <li className="list" key={closet + i}>
+                      <img src={closet} alt={`상의${i + 1}`} width="100" />
+                      <br />
+                      담기{i + 1}
+                      <br />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {/* 최상단으로 이동버튼 */}
             <button id="scrollToTop" onClick={this.scrollToTop}></button>
           </div>
-          {/*menu*/}
+          {/*menu 끝*/}
+
+          {/* 메인페이지 */}
           <ul className="main_scroll" id="main">
             <img id="Logo" src={Logo}></img>
             <br />
-
-            {this.state.list.map((todo, i) => (
+            {this.state.list.map((cloth, i) => (
               <article>
-                <li className="list" key={todo + i}>
-                  <img src={todo} alt={`상의${i + 1}`} width="300" />
+                <li className="list" key={cloth + i}>
+                  <a onClick={() => this.openModal(cloth, this.state.price[i])}>
+                    <img src={cloth} alt={`상의${i + 1}`} width="300" />
+                  </a>
                   <br />
                   상의{i + 1}
                   <br />
                   가격:{this.state.price[i]},000₩
-                  <a onClick={this.handleButtonIncrease}>
+                  {/* <a onClick={this.handleButtonIncrease}>
                     <img id="AddCart" src={Empty_cart}></img>
-                  </a>
+                  </a> */}
                 </li>
               </article>
             ))}
           </ul>
+
           {/* //bootstrap CSS
           <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -157,7 +244,7 @@ class TermProject extends Component {
           ></link>; */}
           <div id="ref" ref={this.setRef}>
             {" "}
-            The End
+            {/* The End */}
           </div>
           {/* /ref */}
         </div>

@@ -17,7 +17,7 @@ class App extends React.Component {
   };
   DecreaseCount = () => {
     this.setState((prevState) => ({
-      count: prevState.count - 1,
+      count: (this.state.count = 0),
     }));
   };
 

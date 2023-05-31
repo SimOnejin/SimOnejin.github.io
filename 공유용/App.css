@@ -51,7 +51,7 @@ a{
 .menu{
   position: fixed;
   width: 25%;
-  padding-top: 10%;
+  padding-top: 5%;
   padding-left: 30px;
   padding-right: 0px;
   z-index: 10;
@@ -103,7 +103,6 @@ img{
 }
 
 #cart{
-
   position: fixed;
   top: 30px;
   /* right: 3%; */
@@ -136,6 +135,26 @@ img{
   50% { transform: scale(1.5); }
   100% { transform: scale(1); }
 }
+.cartItems{
+  background-color: #cccdcf;
+  border: #000 1px;
+  overflow-y: scroll;
+  width: 13em;
+  height: 10em;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.cartItems::-webkit-scrollbar {
+  display: none;
+}
+.trash {
+  position: sticky;
+  padding-left: 85%;
+  top :10%;
+
+}
+
+
 
 button{
   cursor: pointer;
